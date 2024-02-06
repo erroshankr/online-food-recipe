@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Arrays;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -20,14 +22,15 @@ public class AdminController {
     @GetMapping("/home")
     public String getAdminHome(Model model){
         model.addAttribute("recipe", new Recipe());
+        model.addAttribute("categories", Arrays.asList("Breakfast", "Lunch", "Dinner")); // Add categories to the model
         return "admin_home";
     }
 
     @PostMapping("/createRecipe")
-    public String createRecipe(Model model, @ModelAttribute Recipe recipe){
-
-        // customize
+    public String createRecipe(@ModelAttribute Recipe recipe){
+        // Process the form submission and save the recipe
         recipeRepository.save(recipe);
-        return "home";
+        return "redirect:/admin/home"; // Redirect to the home page after creating the recipe
     }
+
 }
